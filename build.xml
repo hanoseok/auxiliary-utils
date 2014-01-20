@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<project name="auxiliary-utils" basedir=".">
+	<target name="init">
+		<property environment="env" />
+		<property name="java.home" value="${env.JAVA_HOME}" />
+		<condition property="maven.executable" value="${env.MAVEN_HOME}/bin/mvn.bat">
+			<os family="windows" />
+		</condition>
+		<property name="maven.executable" value="mvn" />
+		<property name="maven.workingdir" value="." />
+		<condition property="user.home" value="${env.HOMEPATH}">
+			<os family="windows" />
+		</condition>
+		<property name="user.home" value="${env.HOME}" />
+	</target>
+
+	<target name="mvn.package" depends="init">
+		<antcall target="function.maven">
+			<param name="maven.argline" value="-Dmaven.test.skip=true package" />
+		</antcall>
+	</target>
+
+	<target name="mvn.install" depends="init">
+		<antcall target="function.maven">
+			<param name="maven.argline" value="-Dmaven.test.skip=true install" />
+		</antcall>
+	</target>
+
+	<target name="mvn.deploy" depends="init">
+		<antcall target="function.maven">
+			<param name="maven.argline" value="deploy" />
+		</antcall>
+	</target>
+
+	<target name="function.maven">
+		<exec executable="${maven.executable}" dir="${maven.workingdir}" failonerror="true">
+			<env key="JAVA_HOME" path="${java.home}" />
+			<arg line="${maven.argline}" />
+		</exec>
+	</target>
+
+</project>
