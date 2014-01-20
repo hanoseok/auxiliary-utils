@@ -1,4 +1,4 @@
-auxiliary-util
+auxiliary-utils
 ==============
 
 Auxiliary utilies library
